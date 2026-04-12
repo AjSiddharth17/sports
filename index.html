@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Athlete Sports Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWix+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4nH+8R9u1a0fN7L+Q0h+NfL7A6Y2F2QwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app-loader" class="app-loader">
+    <div class="loader-ring"></div>
+    <p>Loading Athlete Sports Tracker...</p>
+  </div>
+
+  <header class="navbar">
+    <div class="brand">
+      <i class="fa-solid fa-futbol"></i>
+      <span>Athlete Sports Tracker</span>
+    </div>
+    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <nav id="nav-links" class="nav-links">
+      <button class="nav-link active" data-section="landing">Home</button>
+      <button class="nav-link" data-section="dashboard">Dashboard</button>
+      <button class="nav-link" data-section="profile">Profile</button>
+      <button class="nav-link" data-section="events">Events</button>
+      <button class="nav-link" data-section="diet">Diet</button>
+      <button class="nav-link" data-section="workout">Workout</button>
+      <button class="nav-link" data-section="chatbot">AI Coach</button>
+      <button class="nav-link" data-section="auth" id="auth-nav-link">Auth</button>
+      <button class="nav-link" id="logout-btn" style="display: none;">Logout</button>
+    </nav>
+    <span id="user-pill" class="pill user-pill" style="display: none;"></span>
+  </header>
+
+  <main>
+    <section id="landing" class="app-section active-section">
+      <div class="hero">
+        <div class="hero-content">
+          <h1>Track Your Game. Elevate Your Performance.</h1>
+          <p id="hero-subtitle">
+            Your football-focused performance hub for match prep, nutrition,
+            training plans, and AI guidance.
+          </p>
+          <label class="sport-select">
+            Primary sport
+            <select id="sport-select">
+              <option value="Football">Football (Soccer)</option>
+              <option value="Basketball">Basketball</option>
+              <option value="Tennis">Tennis</option>
+              <option value="Running">Running</option>
+              <option value="Shooting">Shooting</option>
+              <option value="General">General Fitness</option>
+            </select>
+          </label>
+          <div class="hero-cta">
+            <button class="btn btn-primary" data-section-jump="auth">Login</button>
+            <button class="btn btn-secondary" data-section-jump="dashboard">Get Started</button>
+          </div>
+        </div>
+        <div class="hero-visual card">
+          <i class="fa-solid fa-shield-heart"></i>
+          <h3>Peak Match Readiness</h3>
+          <p>Stay consistent with smarter planning and real-time tracking.</p>
+        </div>
+      </div>
+
+      <div class="features-grid">
+        <article class="card feature-card">
+          <i class="fa-regular fa-calendar-check"></i>
+          <h3>Event Tracking</h3>
+          <p>Manage matches, opponents, and notes in one place.</p>
+        </article>
+        <article class="card feature-card">
+          <i class="fa-solid fa-bowl-food"></i>
+          <h3>Diet Plans</h3>
+          <p>Fuel up with goal-based nutrition and macro guidance.</p>
+        </article>
+        <article class="card feature-card">
+          <i class="fa-solid fa-dumbbell"></i>
+          <h3>Workouts</h3>
+          <p>Build strength, endurance, and agility for match day.</p>
+        </article>
+        <article class="card feature-card">
+          <i class="fa-solid fa-robot"></i>
+          <h3>AI Chatbot</h3>
+          <p>Get instant football training and recovery suggestions.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="dashboard" class="app-section">
+      <div class="card-header dashboard-header">
+        <h2 class="section-title">Performance Dashboard</h2>
+        <span id="sport-label" class="pill">Football</span>
+      </div>
+      <div class="dashboard-grid">
+        <article class="card metric-card">
+          <h3 id="upcoming-title">Upcoming Matches</h3>
+          <p id="upcoming-matches" class="metric-value">0</p>
+        </article>
+        <article class="card metric-card">
+          <h3>Calories Today</h3>
+          <p id="calories-today" class="metric-value">2,450 kcal</p>
+        </article>
+        <article class="card metric-card">
+          <h3>Workout Status</h3>
+          <p id="workout-status" class="metric-value">On Track</p>
+        </article>
+      </div>
+
+      <article class="card chart-card">
+        <div class="card-header">
+          <h3>Weekly Training Load</h3>
+          <button id="refresh-chart" class="btn btn-secondary small">Refresh</button>
+        </div>
+        <canvas id="training-chart" width="800" height="300" aria-label="Weekly training load chart"></canvas>
+      </article>
+    </section>
+
+    <section id="profile" class="app-section">
+      <h2 class="section-title">Athlete Profile</h2>
+      <article class="card">
+        <h3>Personal Metrics</h3>
+        <form id="profile-form" class="form-grid">
+          <label>
+            Height (cm)
+            <input type="number" id="profile-height" min="100" max="250" placeholder="175" required />
+          </label>
+          <label>
+            Weight (kg)
+            <input type="number" id="profile-weight" min="30" max="200" step="0.1" placeholder="70.5" required />
+          </label>
+          <label>
+            Age
+            <input type="number" id="profile-age" min="16" max="100" placeholder="25" required />
+          </label>
+          <label>
+            Gender
+            <select id="profile-gender" required>
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </label>
+          <label>
+            Activity Level
+            <select id="profile-activity" required>
+              <option value="">Select activity level</option>
+              <option value="sedentary">Sedentary (little/no exercise)</option>
+              <option value="light">Lightly active (1-3 days/week)</option>
+              <option value="moderate">Moderately active (3-5 days/week)</option>
+              <option value="active">Very active (6-7 days/week)</option>
+              <option value="athlete">Athlete (intense training)</option>
+            </select>
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Profile</button>
+            <button type="button" class="btn btn-secondary" id="profile-reset-btn">Reset</button>
+          </div>
+          <p id="profile-error" class="form-error"></p>
+        </form>
+      </article>
+      <article class="card" id="profile-summary" style="display: none;">
+        <h3>Your Stats</h3>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <span class="stat-label">BMR:</span>
+            <span class="stat-value" id="bmr-value">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">TDEE:</span>
+            <span class="stat-value" id="tdee-value">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">BMI:</span>
+            <span class="stat-value" id="bmi-value">-</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="events" class="app-section">
+      <h2 class="section-title" id="events-title">Football Events</h2>
+      <div class="events-layout">
+        <article class="card">
+          <h3 id="event-form-title">Add Event</h3>
+          <form id="event-form" class="form-grid">
+            <input type="hidden" id="event-id" />
+            <label>
+              Date
+              <input type="date" id="event-date" required />
+            </label>
+            <label>
+              Opponent
+              <input type="text" id="event-opponent" placeholder="e.g. City FC" required />
+            </label>
+            <label>
+              Location
+              <input type="text" id="event-location" placeholder="e.g. Home Stadium" required />
+            </label>
+            <label>
+              Notes
+              <textarea id="event-notes" rows="3" placeholder="Formation, strategy, etc."></textarea>
+            </label>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="event-submit-btn">Save Event</button>
+              <button type="button" class="btn btn-secondary" id="event-reset-btn">Reset</button>
+            </div>
+            <p id="event-form-error" class="form-error"></p>
+          </form>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3 id="city-events-title">City Events</h3>
+          </div>
+          <ul id="city-events-list" class="events-list"></ul>
+          <p id="city-events-empty" class="muted" style="display: none;">No city events available right now.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>Saved Events</h3>
+            <span id="events-count" class="pill">0 Events</span>
+          </div>
+          <ul id="events-list" class="events-list"></ul>
+          <p id="events-empty" class="muted">No events yet. Add your first match.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="diet" class="app-section">
+      <h2 class="section-title">Diet Plan</h2>
+      <div class="tab-controls" id="diet-tabs">
+        <button class="tab-btn active" data-diet="bulking">Bulking</button>
+        <button class="tab-btn" data-diet="cutting">Cutting</button>
+        <button class="tab-btn" data-diet="maintenance">Maintenance</button>
+      </div>
+      <article class="card">
+        <div class="diet-meta">
+          <h3 id="diet-title">Bulking Plan</h3>
+          <p id="diet-calories" class="pill"></p>
+          <p id="diet-macros" class="pill"></p>
+        </div>
+        <div id="diet-meals" class="diet-grid"></div>
+      </article>
+    </section>
+
+    <section id="workout" class="app-section">
+      <h2 class="section-title">Workout Library</h2>
+      <div class="tab-controls" id="workout-tabs">
+        <button class="tab-btn active" data-workout="strength">Strength</button>
+        <button class="tab-btn" data-workout="endurance">Endurance</button>
+        <button class="tab-btn" data-workout="agility">Agility</button>
+      </div>
+      <div id="workout-list" class="workout-grid"></div>
+    </section>
+
+    <section id="chatbot" class="app-section">
+      <h2 class="section-title" id="chatbot-title">AI Sports Assistant</h2>
+      <article class="card chatbot-card">
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-prompts">
+          <button class="prompt-btn">Pre-match meal?</button>
+          <button class="prompt-btn">Improve stamina?</button>
+          <button class="prompt-btn">Recovery tips?</button>
+        </div>
+        <form id="chat-form" class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Ask your AI coach..." required />
+          <button type="submit" class="btn btn-primary" id="chat-send-btn">Send</button>
+        </form>
+      </article>
+    </section>
+
+    <section id="auth" class="app-section">
+      <h2 class="section-title">Authentication</h2>
+      <div class="auth-layout">
+        <article class="card auth-card">
+          <div class="card-header">
+            <h3>Login</h3>
+          </div>
+          <form id="login-form" class="form-grid">
+            <label>
+              Email
+              <input type="email" id="login-email" required />
+            </label>
+            <label>
+              Password
+              <input type="password" id="login-password" minlength="6" required />
+            </label>
+            <button type="submit" class="btn btn-primary" id="login-btn">Login</button>
+            <p id="login-error" class="form-error"></p>
+          </form>
+        </article>
+
+        <article class="card auth-card">
+          <div class="card-header">
+            <h3>Signup</h3>
+          </div>
+          <form id="signup-form" class="form-grid">
+            <label>
+              Name
+              <input type="text" id="signup-name" required />
+            </label>
+            <label>
+              Email
+              <input type="email" id="signup-email" required />
+            </label>
+            <label>
+              Password
+              <input type="password" id="signup-password" minlength="6" required />
+            </label>
+            <label>
+              Confirm Password
+              <input type="password" id="signup-confirm" minlength="6" required />
+            </label>
+            <button type="submit" class="btn btn-primary" id="signup-btn">Create Account</button>
+            <p id="signup-error" class="form-error"></p>
+          </form>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Athlete Sports Tracker | Built for football athletes.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
