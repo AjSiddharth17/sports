@@ -7,3 +7,10 @@ describe("GET /api/health", () => {
     expect(res.statusCode).toBe(200);
   });
 });
+it("should fail if event name is missing", async () => {
+  const res = await request(app)
+    .post("/api/events")
+    .send({});
+
+  expect(res.statusCode).toBe(400);
+});
